@@ -2,18 +2,23 @@ package com.amp.nvamp.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.view.GravityCompat
-import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doOnTextChanged
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.amp.nvamp.MainActivity
+import com.amp.nvamp.MainActivity.Companion.playerViewModel
 import com.amp.nvamp.NvampApplication
 import com.amp.nvamp.R
 import com.amp.nvamp.adapter.Songslistadapter
@@ -31,6 +36,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.launch
+import com.amp.nvamp.viewmodel.PlayerViewModel.Companion.mediaitems
 
 class ViewPagerFragment : Fragment() {
     private lateinit var fragmentContainer: ViewPager2
@@ -44,7 +50,9 @@ class ViewPagerFragment : Fragment() {
     private lateinit var searchView: SearchView
 
     private var allSongs: List<Song> = songs
-    private var filteredSongs: MutableList<Song> = mutableListOf()
+
+    private var allmediaitems = mediaitems
+    private var SearchListView: RecyclerView? = null
 
     companion object {
         lateinit var loaderview: MaterialCardView
@@ -57,6 +65,8 @@ class ViewPagerFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_view_pager, container, false)
     }
+
+
 
     override fun onViewCreated(
         view: View,
@@ -75,7 +85,11 @@ class ViewPagerFragment : Fragment() {
 
         toolbar = view.findViewById(R.id.toolbar)
 
+        adapter = Songslistadapter(allmediaitems, playerViewModel.controllerFuture)
+
         navigationview = view.findViewById(R.id.navigation_view)
+
+        SearchListView = view.findViewById(R.id.searchviewrecyclerview)
 
         val progressIndicator = view.findViewById<CircularProgressIndicator>(R.id.progress_circular)
 
@@ -98,25 +112,34 @@ class ViewPagerFragment : Fragment() {
                 }
         }.attach()
 
-        // 🔗 Connect search bar with search view
+
         searchView.setupWithSearchBar(searchBar)
 
-        // 🔍 Handle search text changes
-        searchView.editText.addTextChangedListener { text ->
+        searchView.editText.doOnTextChanged{ text,_,_,_, ->
 
-//            val query = text.toString().lowercase()
-//
-//            filteredSongs = if (query.isEmpty()) {
-//                allSongs.toMutableList()
-//                else{
-//                    allSongs.filter { song ->
-//                        song.title.lowercase().contains(query) || song.artist.lowercase()
-//                            .contains(query)
-//                    }.toMutableList()
-//                }
-//            }
-//
-//            adapter.submit
+            val query = text.toString().trim().lowercase()
+
+            val result = if (query.isBlank()) {
+                allmediaitems
+            } else {
+                allmediaitems.filter { song ->
+                    song.mediaMetadata.title!!.toString().lowercase().contains(query) ||
+                            song.mediaMetadata.artist!!.toString().lowercase().contains(query)
+                }
+            }
+
+            SearchListView?.layoutManager = LinearLayoutManager(requireContext())
+            adapter = Songslistadapter(result.toMutableList(), playerViewModel.controllerFuture)
+            SearchListView?.adapter = adapter
+
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner
+        ) {
+            if (searchView.isShowing) {
+                searchView.hide()   // close search first
+            }
         }
 
         toolbar.setNavigationOnClickListener {

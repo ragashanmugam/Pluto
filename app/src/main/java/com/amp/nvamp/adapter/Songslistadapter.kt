@@ -37,6 +37,7 @@ class Songslistadapter(
 
     val playlistmap = mutableMapOf<String, List<Song>>()
     val dynamicChoice: Set<String> = playlistmap.keys
+    var newmediaitem = mediaitems
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val songTitle: TextView = view.findViewById(R.id.title)
@@ -46,6 +47,21 @@ class Songslistadapter(
 
         val options: MaterialButton = view.findViewById(R.id.options)
     }
+
+    fun updateSongs(newSongs: MutableList<MediaItem>) {
+
+
+
+        if(newSongs.isEmpty()) {
+            mediaitems.clear()
+            mediaitems.addAll(newmediaitem)
+        }else{
+            mediaitems.clear()
+            mediaitems.addAll(newSongs)
+        }
+        notifyDataSetChanged()
+    }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

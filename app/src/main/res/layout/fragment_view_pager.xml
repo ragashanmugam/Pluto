@@ -97,8 +97,21 @@
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Search songs..."
-        app:layout_anchor="@id/search_bar"/>
+        android:hint="Search songs.artist..."
+        app:layout_anchor="@id/search_bar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchviewrecyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/songs_card_view"/>
+
+    </com.google.android.material.search.SearchView>
 
     <!-- Drawer (side menu) -->
     <com.google.android.material.navigation.NavigationView

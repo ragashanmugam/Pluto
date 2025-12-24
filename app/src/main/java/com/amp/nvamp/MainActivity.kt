@@ -78,11 +78,11 @@ class MainActivity : AppCompatActivity() {
                 object : Player.Listener {
                     override fun onPlaybackStateChanged(state: Int) {
                         if (!isRestored && state == Player.STATE_READY) {
-                            
+
                             val lastIndex = playerViewModel.getlastplayedpos()
                             val lastMs = playerViewModel.getLastPlayedms().toLong()
 
-                            controller.seekTo(lastIndex,lastMs)
+                            controller.seekTo(lastIndex, lastMs)
 
                             isRestored = true
                         }
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
             controller.setMediaItems(
                 songmediaItems.ifEmpty { mediaitems },
-                playerViewModel.getlastplayedpos(),0L
+                playerViewModel.getlastplayedpos(), 0L
             )
             controller.prepare()
         }
