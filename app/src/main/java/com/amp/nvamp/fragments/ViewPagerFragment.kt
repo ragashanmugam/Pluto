@@ -139,6 +139,9 @@ class ViewPagerFragment : Fragment() {
         ) {
             if (searchView.isShowing) {
                 searchView.hide()   // close search first
+            }else {
+                isEnabled = false
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
         }
 
