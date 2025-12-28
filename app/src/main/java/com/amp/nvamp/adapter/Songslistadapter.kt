@@ -26,6 +26,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.common.util.concurrent.ListenableFuture
 import java.io.File
 
@@ -172,37 +174,50 @@ class Songslistadapter(
                 MaterialAlertDialogBuilder(view.context)
                     .setTitle("Save")
                     .setNeutralButton("ADD") { dialog, id ->
-                        val editText = EditText(view.context)
+                        val context = view.context
+
+                        val textInputLayout = TextInputLayout(context,null,com.google.android.material.R.attr.textInputOutlinedDenseStyle).apply {
+                            hint = "Enter name"
+                        }
+
+                        val editText = TextInputEditText(context).apply {
+                            textSize = 14f
+                            minHeight = (48 * resources.displayMetrics.density).toInt()
+                        }
+                        textInputLayout.addView(editText)
+
                         MaterialAlertDialogBuilder(view.context)
-                            .setTitle("playlist")
-                            .setView(editText)
+                            .setTitle("Playlist")
+                            .setView(textInputLayout)
                             .setNegativeButton("cancle") { dialog1, which ->
                                 dialog.dismiss()
                             }
                             .setPositiveButton("ok") { dialog, which ->
                                 val playlistname = editText.text
-                                val playlist =
-                                    Song(
-                                        mediaitems[position].mediaMetadata.title.toString(),
-                                        mediaitems[position].mediaMetadata.artist.toString(),
-                                        mediaitems[position].mediaMetadata.durationMs,
-                                        mediaitems[position].mediaMetadata.description.toString(),
-                                        "",
-                                        "",
-                                        0L,
-                                        mediaitems[position].mediaMetadata.artworkUri!!,
-                                        "",
-                                        "",
-                                        mediaitems[position].mediaMetadata.description.toString(),
-                                        0,
-                                        mediaitems[position].mediaMetadata.trackNumber,
-                                        0L,
-                                    )
-                                var newplaylist = mutableListOf<Song>()
-                                newplaylist.add(playlist)
-                                playlistmap.put(playlistname.toString(), newplaylist)
-                                playerViewModel.setplayListMusic(playlistmap)
-                                PlaylistFragment.playernotify()
+                                if(playlistname!!.isNotBlank()) {
+                                    val playlist =
+                                        Song(
+                                            mediaitems[position].mediaMetadata.title.toString(),
+                                            mediaitems[position].mediaMetadata.artist.toString(),
+                                            mediaitems[position].mediaMetadata.durationMs,
+                                            mediaitems[position].mediaMetadata.description.toString(),
+                                            "",
+                                            "",
+                                            0L,
+                                            mediaitems[position].mediaMetadata.artworkUri!!,
+                                            "",
+                                            "",
+                                            mediaitems[position].mediaMetadata.description.toString(),
+                                            0,
+                                            mediaitems[position].mediaMetadata.trackNumber,
+                                            0L,
+                                        )
+                                    var newplaylist = mutableListOf<Song>()
+                                    newplaylist.add(playlist)
+                                    playlistmap.put(playlistname.toString(), newplaylist)
+                                    playerViewModel.setplayListMusic(playlistmap)
+                                    PlaylistFragment.playernotify()
+                                }
                             }
                             .show()
                     }

@@ -1,0 +1,14 @@
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="Enter PlayList Name"
+    style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:minHeight="48dp"
+        layout_height=""/>
+</com.google.android.material.textfield.TextInputLayout>
