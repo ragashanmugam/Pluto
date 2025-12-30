@@ -11,6 +11,7 @@ class NvampApplication : Application() {
         context = applicationContext
 
         instance = this
+        DynamicColors.applyToActivitiesIfAvailable(this)
 
         val prefs = getSharedPreferences("PlayerPreferences", MODE_PRIVATE)
         val mode = prefs.getInt("theme_mode", ThemeManager.MODE_SYSTEM)
