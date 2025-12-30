@@ -6,7 +6,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.OptIn
@@ -31,6 +30,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.common.util.concurrent.ListenableFuture
 import java.io.File
 
+
 class Songslistadapter(
     private val mediaitems: MutableList<MediaItem>,
     private val medcontroller: ListenableFuture<MediaController>,
@@ -49,21 +49,6 @@ class Songslistadapter(
 
         val options: MaterialButton = view.findViewById(R.id.options)
     }
-
-    fun updateSongs(newSongs: MutableList<MediaItem>) {
-
-
-
-        if(newSongs.isEmpty()) {
-            mediaitems.clear()
-            mediaitems.addAll(newmediaitem)
-        }else{
-            mediaitems.clear()
-            mediaitems.addAll(newSongs)
-        }
-        notifyDataSetChanged()
-    }
-
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
