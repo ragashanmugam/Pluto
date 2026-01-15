@@ -143,7 +143,14 @@ class PlayerBottomSheet(context: Context, attribute: AttributeSet) :
         object : Runnable {
             override fun run() {
                 if (controller.isPlaying) {
-                    slider.value = controller.currentPosition.toFloat()
+                    val position = controller.currentPosition.toFloat()
+
+                    val safePosition = position.coerceIn(
+                        slider.valueFrom,
+                        slider.valueTo
+                    )
+
+                    slider.value = safePosition
                 }
                 ahandler.postDelayed(this, 100)
             }
@@ -205,7 +212,7 @@ class PlayerBottomSheet(context: Context, attribute: AttributeSet) :
 
                                 override fun onPlaybackStateChanged(playbackState: Int) {
                                     super.onPlaybackStateChanged(playbackState)
-                                    updateplaying()
+                                    //updateplaying()
                                 }
 
                                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
