@@ -212,7 +212,7 @@ class PlayerBottomSheet(context: Context, attribute: AttributeSet) :
 
                                 override fun onPlaybackStateChanged(playbackState: Int) {
                                     super.onPlaybackStateChanged(playbackState)
-                                    //updateplaying()
+                                    updateplaying()
                                 }
 
                                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
