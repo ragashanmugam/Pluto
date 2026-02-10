@@ -217,7 +217,10 @@ class PlayerBottomSheet(context: Context, attribute: AttributeSet) :
 
                                 override fun onMediaMetadataChanged(mediaMetadata: MediaMetadata) {
                                     super.onMediaMetadataChanged(mediaMetadata)
-                                    slider.value = playerViewModel.getLastPlayedms() ?: 0f
+                                    slider.value = 0f
+                                    println(slider.value)
+                                    println(slider.valueFrom)
+                                    println(slider.valueTo)
                                     updatemetadata(mediaMetadata)
                                 }
 
@@ -226,7 +229,10 @@ class PlayerBottomSheet(context: Context, attribute: AttributeSet) :
                                     reason: Int,
                                 ) {
                                     super.onMediaItemTransition(mediaItem, reason)
-                                    slider.valueFrom = 0f
+                                    slider.value = 0f
+                                    println(slider.value)
+                                    println(slider.valueFrom)
+                                    println(slider.valueTo)
                                     ahandler.postDelayed(seekbarplayer, 500)
                                 }
                             },

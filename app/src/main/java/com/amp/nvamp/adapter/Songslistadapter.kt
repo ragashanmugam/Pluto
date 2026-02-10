@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.annotation.OptIn
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import androidx.media3.common.util.UnstableApi
@@ -28,6 +29,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.common.util.concurrent.ListenableFuture
+import kotlinx.coroutines.launch
 import java.io.File
 
 
@@ -88,6 +90,8 @@ class Songslistadapter(
 
         holder.itemView.setOnClickListener {
             songqueue.addAll(mediaitems)
+
+
 
             if (medcontroller.isDone && !medcontroller.isCancelled) {
                 var controller = medcontroller.get()

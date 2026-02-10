@@ -29,7 +29,8 @@ class GenerFragment : Fragment() {
             if (deviceMusicByGener.isNotEmpty()) {
                 deviceMusicList.clear()
                 deviceMusicList.putAll(deviceMusicByGener)
-                adapter.notifyItemRangeChanged(1, 10)
+                if(::adapter.isInitialized)
+                    adapter.notifyItemRangeChanged(1, 10)
             }
         }
     }

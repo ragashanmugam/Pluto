@@ -29,7 +29,8 @@ class ArtistFragment : Fragment() {
             if (deviceMusicByArtist.isNotEmpty()) {
                 deviceMusicList.clear()
                 deviceMusicList.putAll(deviceMusicByArtist)
-                adapter.notifyItemRangeChanged(1, 10)
+                if(::adapter.isInitialized)
+                    adapter.notifyItemRangeChanged(1, 10)
             }
         }
     }

@@ -29,7 +29,8 @@ MusicLibrary : Fragment() {
             if (deviceMusicByAlbum.isNotEmpty()) {
                 deviceMusicList.clear()
                 deviceMusicList.putAll(deviceMusicByAlbum)
-                adapter.notifyItemRangeChanged(1, 10)
+                if(::adapter.isInitialized)
+                    adapter.notifyItemRangeChanged(1, 10)
             }
         }
     }

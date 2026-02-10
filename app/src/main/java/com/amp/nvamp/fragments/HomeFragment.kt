@@ -27,7 +27,8 @@ class HomeFragment : Fragment() {
             if (mediaitems.isNotEmpty()) {
                 musicList.clear()
                 musicList.addAll(mediaitems)
-                adapter.notifyItemRangeChanged(1, 12)
+                if(::adapter.isInitialized)
+                    adapter.notifyItemRangeChanged(1, 12)
             }
         }
     }

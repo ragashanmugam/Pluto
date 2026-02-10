@@ -27,7 +27,8 @@ class FolderFragment : Fragment() {
             if (deviceMusicByFolder.isNotEmpty()) {
                 deviceMusicList.clear()
                 deviceMusicList.putAll(deviceMusicByFolder)
-                adapter.notifyItemRangeChanged(1, 10)
+                if(::adapter.isInitialized)
+                    adapter.notifyItemRangeChanged(1, 10)
             }
         }
     }
