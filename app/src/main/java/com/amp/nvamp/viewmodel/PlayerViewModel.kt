@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.nio.file.Files
 
 class PlayerViewModel(application: Application) : AndroidViewModel(application) {
     private val storageRepo = StorageRepository(application)
@@ -137,14 +138,13 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DISPLAY_NAME))
                 val gener =
                     cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.GENRE))
-                var adddate =
+                //var adddate =
                     cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_ADDED))
 
                 val file = File(data)
-                if (adddate.equals(0)) {
-                    adddate =
-                        cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATE_MODIFIED))
-                }
+                //if (adddate.equals(0)) {
+                var adddate = file.lastModified().toInt()
+                //}
 
                 val foldername = data.replace(display_name, "")
 
@@ -192,7 +192,7 @@ class PlayerViewModel(application: Application) : AndroidViewModel(application) 
         deviceMusicByAlbum = songs.groupBy { it.album }
         deviceMusicByFolder = songs.groupBy { it.foldername }
         deviceMusicByArtist = songs.groupBy { it.artist }
-        deviceMusicByDate = songs.sortedByDescending { it.date }.toMutableList()
+        deviceMusicByDate = songs.sortedByDescending { File(it.data).lastModified() }.toMutableList()
         deviceMusicByGener = songs.groupBy { it.gener ?: "Unknown" }
     }
 
