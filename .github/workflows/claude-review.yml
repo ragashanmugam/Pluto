@@ -1,0 +1,41 @@
+name: Claude Code Review & Refactor
+
+on:
+  # Trigger when someone comments @claude on a PR
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+
+  # Auto-review every new/updated PR
+  pull_request:
+    types: [opened, synchronize]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  claude-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          # For auto PR review on every push:
+          prompt: |
+            You are a senior Android/Kotlin engineer.
+            Review all changed Kotlin files in this PR.
+            Focus on:
+            1. Idiomatic Kotlin (use data classes, extension functions, scope functions)
+            2. Coroutines & Flow instead of callbacks or raw threads
+            3. MVVM/Clean Architecture violations
+            4. Null safety and crash risks
+            5. Code duplication or overly complex logic
+            6. Missing error handling
+
+            Post your findings as PR review comments with specific line references.
+            Suggest improved code snippets inline.
+          claude_args: "--max-turns 5"
